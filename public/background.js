@@ -13,7 +13,14 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
   activeTabId = activeInfo.tabId;
   startTime = new Date();
   chrome.tabs.get(activeTabId, (tab) => {
-    activeTabUrl = new URL(tab.url).hostname;
+    if (tab.url) {
+      try {
+        activeTabUrl = new URL(tab.url).hostname;
+      } catch (error) {
+        console.error("Invalid URL: ", tab.url);
+        activeTabUrl = null;
+      }
+    }
   });
 });
 
@@ -21,7 +28,14 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === "complete" && tabId === activeTabId) {
     calculateTimeSpent();
     startTime = new Date();
-    activeTabUrl = new URL(tab.url).hostname;
+    if (tab.url) {
+      try {
+        activeTabUrl = new URL(tab.url).hostname;
+      } catch (error) {
+        console.error("Invalid URL: ", tab.url);
+        activeTabUrl = null;
+      }
+    }
   }
 });
 

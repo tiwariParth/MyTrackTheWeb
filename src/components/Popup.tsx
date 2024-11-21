@@ -6,22 +6,26 @@ const Popup = () => {
   }>({});
 
   useEffect(() => {
-    chrome.storage.local.get(["timeSpentPerSite"], function (result) {
-      setTimeSpentPerSite(result.timeSpentPerSite || {});
-    });
+    if (typeof chrome !== "undefined" && chrome.storage) {
+      chrome.storage.local.get(["timeSpentPerSite"], function (result) {
+        setTimeSpentPerSite(result.timeSpentPerSite || {});
+      });
 
-    chrome.storage.onChanged.addListener(function (changes, areaName) {
-      if (areaName === "local" && changes.timeSpentPerSite) {
-        setTimeSpentPerSite(changes.timeSpentPerSite.newValue || {});
-      }
-    });
+      chrome.storage.onChanged.addListener(function (changes, areaName) {
+        if (areaName === "local" && changes.timeSpentPerSite) {
+          setTimeSpentPerSite(changes.timeSpentPerSite.newValue || {});
+        }
+      });
+    }
   }, []);
 
   const handleReset = () => {
-    chrome.storage.local.clear(() => {
-      setTimeSpentPerSite({});
-      console.log("Time spent data has been reset.");
-    });
+    if (typeof chrome !== "undefined" && chrome.storage) {
+      chrome.storage.local.clear(() => {
+        setTimeSpentPerSite({});
+        console.log("Time spent data has been reset.");
+      });
+    }
   };
 
   return (
