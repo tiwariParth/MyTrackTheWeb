@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Popup = () => {
   const [timeSpentPerSite, setTimeSpentPerSite] = useState<{ [key: string]: number }>({});
