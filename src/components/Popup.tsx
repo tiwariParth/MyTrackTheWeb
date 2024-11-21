@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 const Popup = () => {
-  const [timeSpentPerSite, setTimeSpentPerSite] = useState<{ [key: string]: number }>({});
+  const [timeSpentPerSite, setTimeSpentPerSite] = useState<{
+    [key: string]: number;
+  }>({});
 
   useEffect(() => {
     chrome.storage.local.get(["timeSpentPerSite"], function (result) {
@@ -25,7 +27,10 @@ const Popup = () => {
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold">TrackMyWeb</h1>
-      <button onClick={handleReset} className="bg-red-500 text-white px-4 py-2 mt-4">
+      <button
+        onClick={handleReset}
+        className="bg-red-500 text-white px-4 py-2 mt-4"
+      >
         Reset Time Spent
       </button>
       <div id="time-spent" className="mt-4">
