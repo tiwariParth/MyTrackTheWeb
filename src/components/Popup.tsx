@@ -59,7 +59,6 @@ const Popup = () => {
             ))}
           </tbody>
         </table>
-        {console.log("Rendering table with data:", timeSpentPerSite)}
       </div>
     </div>
   );
