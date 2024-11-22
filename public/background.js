@@ -7,6 +7,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
+  console.log("Tab activated", activeInfo);
   if (activeTabId !== null) {
     calculateTimeSpent();
   }
@@ -16,6 +17,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
     if (tab.url) {
       try {
         activeTabUrl = new URL(tab.url).hostname;
+        console.log("Active tab URL:", activeTabUrl);
       } catch (error) {
         console.error("Invalid URL: ", tab.url);
         activeTabUrl = null;
@@ -26,11 +28,13 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === "complete" && tabId === activeTabId) {
+    console.log("Tab updated", tabId, changeInfo, tab);
     calculateTimeSpent();
     startTime = new Date();
     if (tab.url) {
       try {
         activeTabUrl = new URL(tab.url).hostname;
+        console.log("Updated tab URL:", activeTabUrl);
       } catch (error) {
         console.error("Invalid URL: ", tab.url);
         activeTabUrl = null;
@@ -40,6 +44,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 });
 
 chrome.tabs.onRemoved.addListener((tabId) => {
+  console.log("Tab removed", tabId);
   if (tabId === activeTabId) {
     calculateTimeSpent();
     activeTabId = null;
@@ -49,8 +54,10 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 });
 
 function calculateTimeSpent() {
+  console.log("Calculating time spent");
   if (startTime && activeTabUrl) {
     const timeSpent = (new Date() - startTime) / 60000; // Time spent in minutes
+    console.log("Time spent:", timeSpent);
     if (timeSpent >= 0.5) {
       // Only log if time spent is greater than or equal to 0.5 minutes (30 seconds)
       console.log(

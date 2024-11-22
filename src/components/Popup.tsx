@@ -8,11 +8,16 @@ const Popup = () => {
   useEffect(() => {
     if (typeof chrome !== "undefined" && chrome.storage) {
       chrome.storage.local.get(["timeSpentPerSite"], function (result) {
+        console.log(
+          "Retrieved timeSpentPerSite from storage:",
+          result.timeSpentPerSite
+        );
         setTimeSpentPerSite(result.timeSpentPerSite || {});
       });
 
       chrome.storage.onChanged.addListener(function (changes, areaName) {
         if (areaName === "local" && changes.timeSpentPerSite) {
+          console.log("Storage onChanged event:", changes.timeSpentPerSite);
           setTimeSpentPerSite(changes.timeSpentPerSite.newValue || {});
         }
       });
@@ -49,7 +54,7 @@ const Popup = () => {
             {Object.entries(timeSpentPerSite).map(([site, timeSpent]) => (
               <tr key={site}>
                 <td className="border px-4 py-2">{site}</td>
-                <td className="border px-4 py-2">{Math.floor(timeSpent)}</td>
+                <td className="border px-4 py-2">{timeSpent.toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
