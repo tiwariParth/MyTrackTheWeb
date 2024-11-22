@@ -51,8 +51,8 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 function calculateTimeSpent() {
   if (startTime && activeTabUrl) {
     const timeSpent = (new Date() - startTime) / 60000; // Time spent in minutes
-    if (timeSpent >= 5) {
-      // Only log if time spent is greater than or equal to 5 minutes
+    if (timeSpent >= 0.5) {
+      // Only log if time spent is greater than or equal to 0.5 minutes (30 seconds)
       console.log(
         `Time spent on ${activeTabUrl}: ${timeSpent.toFixed(2)} minutes`
       );
